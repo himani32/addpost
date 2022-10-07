@@ -9,28 +9,67 @@
 *
 ********************************************************************************/
 
+var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
 var app = express();
-var path = require("path");
-
-var HTTP_PORT = process.env.PORT || 8080;
-
-// call this function after the http server starts listening for requests
-function onHttpStart() {
-  console.log("Express http server listening on: " + HTTP_PORT);
-}
-
+var path = require('path');
+var blogservice = require(__dirname + '/blog-service');
 app.use(express.static('public')); 
 
-// setup a 'route' to listen on the default url path (http://localhost)
-app.get("/about", function(req,res){
-  res.redirect("About<br /><a href='/about'>Go to the about page</a>");
+onHttpStart = () => 
+{
+    console.log('Express http server listening on ' + HTTP_PORT);
+}
+
+app.use(express.static('public'));
+
+app.get('/', (req, res) =>
+{
+    res.redirect('/about')
 });
 
-// setup another route to listen on /about
-app.get("/about", function(req,res){
-  res.sendFile(path.join(__dirname, "/views/about.html"));
+app.get('/about', (req, res) => 
+{
+    res.sendFile(path.join(__dirname + "/views/about.html"));
 });
 
-// setup http server to listen on HTTP_PORT
-app.listen(HTTP_PORT, onHttpStart);
+app.get("/blog", (req, res) => 
+{
+    blogservice.getPublishedPosts().then((data) =>
+    {
+        res.json({data});
+    }).catch((err) => {
+        res.json({message: err});
+    })
+});
+
+app.get("/data/posts.json", (req, res) => 
+{
+    blogservice.getAllPosts().then((data) =>
+    {
+        res.json({data});
+    }).catch((err) => {
+        res.json({message: err});
+    })
+});
+
+app.get("/data/categories.json", (req, res) => 
+{
+    blogservice.getCategories().then((data) =>
+    {
+        res.json({data});
+    }).catch((err) => {
+        res.json({message: err});
+    })
+});
+
+app.get('*', function(req, res){
+    res.status(404).send("Page Not Found!");
+  });
+
+blogservice.initialize().then(() => 
+{
+    app.listen(HTTP_PORT, onHttpStart());
+}).catch (() => {
+    console.log("ERROR : From starting the server");
+});
