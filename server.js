@@ -5,7 +5,7 @@
 * 
 *  Name: ____HIMANI__________________ Student ID: ___155567217___________ Date: __09/30/2022______________
 *
-*  Online (Cyclic) Link: _____________https://cute-jade-bream-fez.cyclic.app/about___________________________________________
+*  Online (Cyclic) Link: https://cute-jade-bream-fez.cyclic.app/about
 *
 ********************************************************************************/
 
