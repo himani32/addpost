@@ -1,3 +1,14 @@
+/*********************************************************************************
+*  WEB322 – Assignment 02
+*  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part *  of this assignment has been copied manually or electronically from any other source 
+*  (including 3rd party web sites) or distributed to other students.
+* 
+*  Name: ____HIMANI__________________ Student ID: ___155567217___________ Date: __09/30/2022______________
+*
+*  Online (Cyclic) Link: ____https://drab-gold-dibbler-tam.cyclic.app/____________________________________________________
+*
+********************************************************************************/
+
 var express = require("express");
 var app = express();
 var path = require("path");
