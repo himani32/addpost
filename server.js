@@ -15,6 +15,19 @@ var app = express();
 var path = require("path");
 var blogservice = require(__dirname + "/blog-service");
 app.use(express.static("public"));
+const multer = require("multer");
+const cloudinary = require('cloudinary').v2 ;
+const streamifier = require('streamifier') ;
+
+const upload = multer();// no { storage: storage } since we are not using disk storage
+
+cloudinary.config({
+    cloud_name: 'dpgjtl45x',
+    api_key: '476436394292844',
+    api_secret: 'K5HEyz2jq0hzm27U6CJfWSnmvFY',
+    secure: true
+});
+
 
 onHttpStart = () => {
   console.log("Express http server listening on " + HTTP_PORT);
@@ -28,6 +41,14 @@ app.get("/", (req, res) => {
 
 app.get("/about", (req, res) => {
   res.sendFile(path.join(__dirname + "/views/about.html"));
+});
+app.get("/posts/add",(req,res) => {
+  res.sendFile(path.join(__dirname + "/views/addPost.html"));
+});
+app.post('/posts/add', (req,res) => {
+  blogservice.addPost(req.body).then(() => {
+      res.redirect("/Posts");
+  })
 });
 
 app.get("/blog", (req, res) => {
@@ -62,7 +83,37 @@ app.get("/data/categories.json", (req, res) => {
       res.json({ message: err });
     });
 });
+app.post('/posts/add', upload.single("featureImage"), (req, res) => {
+  let streamUpload = (req) => {
+    return new Promise((resolve, reject) => {
+        let stream = cloudinary.uploader.upload_stream(
+            (error, result) => {
+            if (result) {
+                resolve(result);
+            } else {
+                reject(error);
+            }
+            }
+        );
 
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+    });
+};
+
+async function upload(req) {
+    let result = await streamUpload(req);
+    console.log(result);
+    return result;
+}
+
+upload(req).then((uploaded)=>{
+    req.body.featureImage = uploaded.url;
+
+    // TODO: Process the req.body and add it as a new Blog Post before redirecting to /posts
+
+});
+
+  
 app.get("*", function (req, res) {
   res.status(404).send("Page Not Found!");
 });
