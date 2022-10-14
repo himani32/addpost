@@ -19,7 +19,7 @@ var blogservice = require(__dirname + "/blog-service");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const streamifier = require("streamifier");
-const upload = multer() //no {storage: storage} since we are not using disk storage
+const upload = multer(); //no {storage: storage} since we are not using disk storage
 
 //Cloudinary for image upload
 cloudinary.config({
