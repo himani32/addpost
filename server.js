@@ -23,9 +23,9 @@ const upload = multer(); //no {storage: storage} since we are not using disk sto
 
 //Cloudinary for image upload
 cloudinary.config({
-  cloud_name: "disrcoxen",
-  api_key: "495465765377585",
-  api_secret: "vC9uipADieuzd5V_fiILuNPTwQA",
+  cloud_name: "dpgjtl45x",
+  api_key: "476436394292844",
+  api_secret: "K5HEyz2jq0hzm27U6CJfWSnmvFY",
   secure: true,
 });
 
