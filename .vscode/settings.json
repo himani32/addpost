@@ -3,6 +3,8 @@
         "cloudinary",
         "dpgjtl",
         "exphbs",
+        "lvalue",
+        "rvalue",
         "Snmv",
         "streamifier"
     ]
